@@ -56,7 +56,7 @@ Resources:
         Type: "AWS::IAM::InstanceProfile"
         Properties:
             Roles:
-                - UdacityS3ReadOnlyEC2
+                - Ref: "IAMRole"
 
     VPC:
         Type: AWS::EC2::VPC
