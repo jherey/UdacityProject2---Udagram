@@ -21,15 +21,10 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: return 1
-
-  testing_when_result:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
+      - run: exit 1
       - run:
-          # name: "testing failed"
-          command: echo test failed
+          name: on error
+          command: echo "Hello Error!"
           when: on_fail
 
   save_hello_world_output:
@@ -69,9 +64,6 @@ workflows:
   say-hello-workflow:
     jobs:
       - testing_when
-      - testing_when_result:
-          requires:
-            - testing_when
       # - save_hello_world_output
       # - print_output_file:
       #     requires:
