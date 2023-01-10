@@ -18,17 +18,17 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo "hello world" > ~/tmp/dir/output.txt
-    persist_to_workspace:
-      root: /tmp/dir
-      paths:
-        - output.txt
+      - persist_to_workspace:
+          root: ~/tmp/dir
+          paths:
+            - output.txt
 
   print_output_file:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
-          at: /tmp/dir
+          at: ~/tmp/dir
       - run: cat ~/tmp/dir/output.txt
 
   # say-hello:
