@@ -13,16 +13,23 @@ jobs:
           name: "Print hello"
           command: "echo hello"
 
-  print_world:
+  save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo world
-  print_name:
+      - run: echo "text to output here" > output.txt
+    persist_to_workspace:
+      root: /tmp/dir
+      paths:
+        - output.txt
+
+  print_output_file:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo $NAME
+      - run: cat output.txt
+    attach_workspace:
+      at: /tmp/dir
 
   # say-hello:
   #   # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
@@ -42,8 +49,5 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - print_hello
-      - print_world:
-          requires:
-            - "print_hello"
-      - print_name
+      - save_hello_world_output
+      - print_output_file
