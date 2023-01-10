@@ -17,6 +17,19 @@ jobs:
     steps:
       - print_pipeline_id
 
+  testing_when:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: return 1
+
+  testing_when_result:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo test failed
+    when: on_fail
+
   save_hello_world_output:
     docker:
       - image: circleci/node:13.8.0
@@ -53,7 +66,10 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - print_hello
+      - testing_when
+      - testing_when_result:
+          requires:
+            - testing_when
       # - save_hello_world_output
       # - print_output_file:
       #     requires:
